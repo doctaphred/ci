@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+PACKAGES=(
+    # build-essential
+    # ca-certificates
+    # curl
+    # g++-8
+    # gcc-8
+    # gfortran
+    # git
+    # graphviz
+    # libatlas-base-dev
+    # libblosc-dev
+    # libffi-dev
+    # libfreetype6-dev
+    # libhdf5-serial-dev
+    # libpcre2-dev
+    # libpq-dev
+    # libsparsehash-dev
+    # libsqlite3-dev
+    # libta-lib0
+    # libunwind-dev
+    # libxml2-dev
+    # libxslt-dev
+    # libzmq3-dev
+    # libzmq5
+    # mercurial
+    # pandoc
+    # pkg-config
+    # python-pip
+    # python-virtualenv
+    # python2.7-dev
+    # # Ubuntu 18.04 provides Python 3.6: the python3.5 packages below
+    # # come from deadsnakes.
+    # python3.5-dev
+    # python3.5-tk  # Needed by matplotlib.
+    # python3.5-venv  # The stdlib `venv` module is packaged separately from python on Ubuntu.
+    # sqlite3
+    # sudo
+    # ta-lib0-dev
+)
+
+# Get all OS updates and packages required for our libraries
+apt-get update
+apt-get -y dist-upgrade
+apt-get install -y apt-transport-https
+
+# Requirements for ta-lib repo
+# apt-signing-key_pub.gpg and quantopian-apt-repo.list are COPY'ed from
+# base/resources in the Dockerfile
+apt-get install -y gnupg
+apt-key add /tmp/apt-signing-key_pub.gpg
+mv /tmp/quantopian-apt-repo.list /etc/apt/sources.list.d/
+
+# Requirements for recent gcc/g++
+apt-get install -y software-properties-common
+add-apt-repository ppa:ubuntu-toolchain-r/test
+
+# Specific Python versions
+add-apt-repository ppa:deadsnakes/ppa
+
+apt-get update
+# The `[@]` means "expand all elements of the array as individual words".
+apt-get install -y ${PACKAGES[@]}
+
+apt-get autoremove -y
+apt-get clean -y
+rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

@@ -16,5 +16,5 @@ script:
   - ls -Alh
   - ls -Alh venv
   - ls -Alh venv/bin
-  - find / -name pytest
+  - find / -name pytest 2>/dev/null
   - make
