@@ -11,4 +11,7 @@ install:
   - make venv
 
 script:
+  - ls -Alh
+  - ls -Alh venv
+  - ls -Alh venv/bin
   - make
