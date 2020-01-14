@@ -11,11 +11,9 @@ lint: venv
 venv:
 	python3 -m venv venv
 	venv/bin/python --version
-	venv/bin/python -m ensurepip
-	venv/bin/pip --version
-	venv/bin/pip install pip==19.3.1
-	venv/bin/pip install -r requirements/dev.txt
-	venv/bin/pip install -e .
+	venv/bin/python -m pip install pip==19.3.1
+	venv/bin/python -m pip install -r requirements/dev.txt
+	venv/bin/python -m pip install -e .
 
 clean:
 	-rm -r venv
